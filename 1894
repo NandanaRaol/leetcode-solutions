@@ -1,0 +1,26 @@
+    int chalkReplacer(vector<int>& v, int k) 
+    {
+        int n=v.size();
+        int ans=0;
+        long long sum=accumulate(v.begin(),v.end(),0LL);
+        long long rem=(k%sum);
+        if(rem==0)
+          return 0;
+        else
+         {
+            int i=0;
+            while(true)
+            {
+                rem=rem-v[i];
+                if(rem<0)
+                {
+                    ans=i;
+                    break;
+                }
+                i++;
+                if(i==n)
+                 i=0;
+            }
+         }  
+         return ans;
+    }
