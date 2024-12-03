@@ -1,0 +1,53 @@
+class Solution 
+{
+public:
+    set<int>nodes;
+    map<int,vector<int>>adj;
+    map<int,int>od,id;
+    vector<int>ep;
+    void solve(int curr)
+    {
+        int nn;
+        while(od[curr])
+        {
+            nn=adj[curr][od[curr]-1];
+            od[curr]--;
+            solve(nn);
+        }
+        ep.push_back(curr);
+    }
+    vector<vector<int>> validArrangement(vector<vector<int>>& v) 
+    {
+        int n=v.size();
+        for(auto x:v)
+        {
+            adj[x[0]].push_back(x[1]);
+            od[x[0]]++;
+            id[x[1]]++;
+            nodes.insert(x[0]);
+            nodes.insert(x[1]);
+        }
+        int sn=INT_MAX;
+        for(int x:nodes)
+        {
+            if(od[x]-id[x]==1)
+            {
+                sn=x;
+                break;
+            }
+        }
+        if(sn==INT_MAX)
+        {
+            sn=v[0][0];
+        }
+        map<int,bool>vis;
+        solve(sn,vis);
+        reverse(ep.begin(),ep.end());
+        vector<vector<int>>ans;
+        for(int i=1;i<ep.size();i++)
+        {
+            ans.push_back({ep[i-1],ep[i]});
+        }
+        return ans;
+    }
+};
