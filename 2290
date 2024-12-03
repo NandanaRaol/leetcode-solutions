@@ -1,0 +1,60 @@
+class Solution
+{
+public:
+  int dr[4]={1,-1,0,0};
+  int dc[4]={0,0,1,-1};
+  struct abc
+  {
+    int cnt;
+     int x_cor;
+     int y_cor;
+     bool operator>(const abc&other)const
+     {
+        return cnt>other.cnt;
+     }
+  };
+    int minimumObstacles(vector<vector<int>>&v) 
+    {
+       int r=v.size();
+       int c=v[0].size();
+       vector<vector<int>>vis(r,vector<int>(c,false));
+       vector<vector<int>>res(r,vector<int>(c,INT_MAX));
+      priority_queue<abc,vector<abc>,greater<abc>>pq;
+       if(v[0][0]==0)
+         pq.push({0,0,0});
+         else
+         pq.push({0,0,1});
+       while(!pq.empty())
+       {
+            auto curr=pq.top();
+            int x=curr.x_cor;
+            int y=curr.y_cor;
+            int t=curr.cnt;
+            pq.pop();
+             if(x==r-1 && y==c-1)
+             {
+                return t;
+             }
+             if(vis[x][y]==true)
+               continue;
+            vis[x][y]=true;
+            for(int i=0;i<4;i++)
+            {
+                int nx=x+dr[i];
+                int ny=y+dc[i];
+                if(nx>=0 && ny>=0 && nx<=r-1 && ny<=c-1 && !vis[nx][ny])
+                {
+                    if(v[nx][ny]==1)
+                    {
+                       pq.push({t+1,nx,ny});
+                    }
+                    else
+                    {
+                       pq.push({t,nx,ny});
+                    }
+                }
+            } 
+       }
+       return -1;
+    }
+};
