@@ -1,0 +1,35 @@
+class Solution 
+{
+public:
+        int maxDistance(string s1,int k) 
+         {
+        int n1=s1.size();
+        int n=0,s=0,e= 0,w=0;
+        int ans=0;
+        for (int i=0;i<n1;i++) 
+        {
+            char ch=s1[i];
+            if (ch=='N')n++;
+            if (ch=='S')s++;
+            if (ch=='E')e++;
+            if (ch=='W')w++;
+        
+       int ne1=(e+n)-(w+s);
+        int ne2=w+s;
+        int ne3=ne1+(2*min(k,ne2));
+        int nw1=(w+n)-(e+s);
+        int nw2=e+s;
+        int nw3=nw1+(2*min(k,nw2));
+     int se1=(e+s)-(w+n);
+        int se2=w+n;
+        int se3=se1+(2*min(k,se2));
+     int sw1=(w+s)-(e+n);
+        int sw2=e+n;
+        int sw3=sw1+(2*min(k,sw2));
+     int maxi1=max({ne3,nw3,se3,sw3,0});
+     maxi1=min(maxi1,i+1);
+    ans=max(ans,maxi1);
+    }
+    return ans;
+}
+};
