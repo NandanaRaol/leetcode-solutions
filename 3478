@@ -1,0 +1,88 @@
+class Solution 
+{
+public:
+ struct abc
+ {
+    int a;
+    int b;
+    int c;
+ };
+    vector<long long> findMaxSum(vector<int>&n1, vector<int>& n2, int k) 
+    {
+        int n=n1.size();
+        map<pair<int,int>,int>mp;
+        vector<abc>comm;
+        map<pair<int, int>,bool>vis;
+        for(int i=0;i<n;i++)
+        {
+            if(vis[{n1[i],n2[i]}]==false)
+            {
+                vis[{n1[i],n2[i]}]=true;
+                mp[{n1[i],n2[i]}]=i;
+            }
+            else
+            {
+                comm.push_back({n1[i],n2[i],i});
+            }
+        }
+        priority_queue<int,vector<int>,greater<int>>pq;
+        long long sum=0;
+        vector<pair<int,int>>v;
+        for(int i=0;i<n;i++)
+        {
+            v.push_back({n1[i],n2[i]});
+        }
+        sort(v.begin(),v.end());
+        int x=v[0].first;
+        vector<long long>res(n,0);
+        int i=0;
+        while(i<n && v[i].first==x)
+            {
+                res[mp[v[i]]]=0;
+                sum+=v[i].second;
+                pq.push(v[i].second);
+                i++;
+            }
+        while(i<n)
+        {
+            
+             int  a=v[i].first;
+            int j=i;
+            while(i<n && v[i].first==a)
+            {
+                while(pq.size()>k)
+                {
+                    sum-=pq.top();
+                    pq.pop();
+                }
+                res[mp[v[i]]]=sum;
+                i++;
+            }
+            for(int m=j;m<i;m++)
+            {
+                pq.push(v[m].second);
+                sum+=v[m].second;
+            }
+        }
+        if(comm.size()==0)
+           return res;
+        else
+          {
+             for(int j=0;j<comm.size();j++)
+             {
+                int x=comm[j].a;
+                int y=comm[j].b;
+                int c=comm[j].c;
+                for(int i=0;i<n;i++)
+                {
+                    if(n1[i]==x && n2[i]==y)
+                    {
+                        if(res[i]!=0)
+                            res[c]=res[i];
+                    }
+                }
+             }
+          }
+      return res;
+    }
+};
